@@ -9,21 +9,99 @@ Escribe aquí tus respuestas con tus propias palabras. Pega tablas, resultados y
 
 _Evidencia:_ …
 
+<img width="1600" height="1019" alt="WhatsApp Image 2026-10-22 at 9 59 01 AM" src="https://github.com/user-attachments/assets/b3cc5078-8e33-4904-902c-0e8141887a49" />
+
+
 _Mi respuesta / análisis:_
+
+*1. Cálculo a mano ($M = 16$ y $N = 1,000,000$ vectores)*
+
+Dado que $m_L \approx \frac{1}{\ln(M)}$, la probabilidad de que un vector alcance al menos la capa $k$ es $P(l \ge k) = M^{-k}$. Por lo tanto, el número esperado de nodos en cada capa es $E[N_{\ge k}] = \frac{N}{M^k}$:
+
+- *Capa $\ge 1$:* $\frac{1,000,000}{16^1} = \frac{1,000,000}{16} = \mathbf{62,500\text{ nodos}}$ ($6.25\%$)
+- *Capa $\ge 2$:* $\frac{1,000,000}{16^2} = \frac{1,000,000}{256} = 3,906.25 \approx \mathbf{3,906\text{ nodos}}$ ($0.39\%$)
+- *Capa $\ge 3$:* $\frac{1,000,000}{16^3} = \frac{1,000,000}{4,096} = 244.14 \approx \mathbf{244\text{ nodos}}$ ($0.024\%$)
+
+*2. Simulación en Python y comparación con el valor teórico*
+
+Código utilizado:
+python
+import numpy as np
+
+M = 16
+mL = 1 / np.log(M)
+N = 1_000_000
+rng = np.random.default_rng(0)
+l = np.floor(-np.log(1 - rng.random(N)) * mL).astype(int)
+
+for k in range(1, 4):
+    print(f"capa >= {k}: simulado={(l >= k).sum():>7,}  teórico={N / M**k:>9,.0f}")
+
+
+Salida obtenida:
+text
+capa >= 1: simulado= 62,675  teórico=   62,500
+capa >= 2: simulado=  4,005  teórico=    3,906
+capa >= 3: simulado=    270  teórico=      244
+
+
+*Comparación:* Los resultados simulados coinciden muy de cerca con los valores teóricos esperados ($62,675$ vs. $62,500$ en capa $\ge 1$; $4,005$ vs. $3,906$ en capa $\ge 2$; y $270$ vs. $244$ en capa $\ge 3$). Las pequeñas diferencias se deben a la varianza natural del muestreo aleatorio con $N = 1,000,000$, confirmando que la distribución exponencial reduce la cantidad de nodos a razón de un factor de $\frac{1}{16}$ por cada capa que se sube.
+
+*3. ¿Por qué es bueno para la velocidad de búsqueda que haya pocos hubs en las capas altas?*
+
+Tener muy pocos nodos (hubs) en las capas superiores permite que la búsqueda greedy inicial (con ef = 1) avance con enlaces de largo alcance ("autopistas") evaluando distancias contra apenas unas decenas o cientos de vectores en lugar de explorar un millón de nodos. De esta manera, el algoritmo se aproxima rápidamente a la región correcta del espacio vectorial en tiempo logarítmico $O(\log N)$ antes de realizar la búsqueda exhaustiva en la capa base (capa 0).
 
 
 ## T2 · ef, k y el tamaño de la cola
 
 _Evidencia:_ …
 
+https://github.com/Azidian/WorkshopRAG/blob/main/evidencias/T2.png
+
 _Mi respuesta / análisis:_
+
+*Respuesta 1:* El problema es que el valor de ef es menor que la cantidad de vecinos solicitados (k). Se recomienda que ef ≥ k, ya que este parámetro controla la amplitud de búsqueda y la cantidad de candidatos considerados. Si se solicitan 10 vecinos y ef = 5, la búsqueda puede tener dificultades para encontrar los 10 vecinos más cercanos con buena calidad. Por eso, se debe aumentar ef al menos hasta 10 y, si es necesario, utilizar un valor mayor para mejorar el recall, teniendo en cuenta que esto puede aumentar el tiempo de búsqueda.
+
+*Respuesta 2:* Conviene comenzar con un valor de ef igual o superior a k. Si el recall es bajo y se necesita encontrar vecinos más cercanos, se debe aumentar ef. Esto permite explorar más candidatos y mejorar la calidad de los resultados, aunque puede incrementar el tiempo de búsqueda. Por tanto, el valor debe ajustarse según el equilibrio deseado entre velocidad y calidad.
+
+*Respuesta 3:* Sí, se puede modificar ef sin reconstruir el índice, porque es un parámetro que controla la búsqueda durante las consultas. En cambio, ef_construction determina la amplitud de búsqueda durante la construcción del grafo y afecta su calidad. Por eso, ef permite ajustar el equilibrio entre velocidad y recall sin necesidad de volver a construir el índice, mientras que modificar los parámetros de construcción puede requerir reconstruirlo.
+.
 
 
 ## T3 · Inserción frente a búsqueda
 
-_Evidencia:_ …
+_Evidencia:_
+
+|                                | Inserción | Búsqueda |
+|--------------------------------|-----------|----------|
+| ¿Se sortea la capa?            | Sí, a cada vector nuevo se le saca al azar una capa máxima `l` con la fórmula `l = ⌊−ln(U)·mL⌋`. | No, la consulta no se guarda en el grafo, entonces siempre arranca desde la capa más alta. |
+| Valor de ef en las capas altas | `ef = 1`, bajando desde arriba hasta la capa `l+1`. | `ef = 1`, bajando desde arriba hasta la capa 1. |
+| Parámetro de la fase principal | `ef_construction`, en todas las capas desde `l` hasta la 0. | `ef`, pero solo en la capa 0. |
+| ¿Modifica el índice?           | Sí, conecta el vector con sus `M` vecinos más cercanos y si algún nodo queda con demasiadas conexiones se le quita la más débil. | No, solo recorre el grafo y devuelve los `k` más cercanos. |
+
+Lo saqué de las presentaciones de [Inserción](https://ia-eafit-rag.netlify.app/teoria/hnsw_insercion) y [Búsqueda](https://ia-eafit-rag.netlify.app/teoria/hnsw_busqueda).
 
 _Mi respuesta / análisis:_
+
+**Por qué de cada fila**
+
+**1. Sorteo de capa**
+En la inserción tiene sentido porque hay que decidir en qué capas va a quedar el vector, y hacerlo al azar evita que el grafo dependa del orden en que llegan los datos. En la búsqueda no se agrega nada, entonces no hay nada que sortear.
+
+**2. ef en capas altas**
+Las dos usan `ef = 1` porque ahí lo único que importa es llegar rápido a la zona correcta. Todavía no se necesita precisión, con quedarse con el mejor candidato es suficiente.
+
+**3. Fase principal**
+En la inserción hay que buscar buenos vecinos en cada capa donde va a vivir el vector, porque de eso depende qué tan bueno queda el grafo. En la búsqueda los resultados salen de la capa 0, que es la única que tiene todos los nodos, entonces ahí es donde vale la pena buscar con más cuidado.
+
+**4. ¿Modifica el índice?**
+Insertar es escribir en el grafo y buscar es solo leerlo. Por eso `ef` se puede cambiar en cada consulta sin reconstruir nada, pero `ef_construction` queda fijo cuando se construye el índice.
+
+**¿Qué dispara cada llamada en el notebook 03?**
+
+- `vectorstore.add_documents(...)` → **Inserción.** Cada chunk se pasa a embedding y Qdrant lo mete en su índice HNSW.
+- `retriever.invoke(...)` → **Búsqueda.** La pregunta se convierte en embedding y Qdrant recorre el grafo para devolver los `k` chunks más parecidos que pasen el `score_threshold`.
+
 
 
 ## T4 · El invariante de FAISSVectorStore
