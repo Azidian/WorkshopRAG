@@ -7,14 +7,14 @@ Escribe aquí tus respuestas con tus propias palabras. Pega tablas, resultados y
 
 ## T1 · Cuántos nodos viven en cada capa
 
-_Evidencia:_ …
+_Evidencia:_
 
 <img width="1600" height="1019" alt="WhatsApp Image 2026-10-22 at 9 59 01 AM" src="https://github.com/user-attachments/assets/b3cc5078-8e33-4904-902c-0e8141887a49" />
 
 
 _Mi respuesta / análisis:_
 
-*1. Cálculo a mano ($M = 16$ y $N = 1,000,000$ vectores)*
+**1. Cálculo a mano ($M = 16$ y $N = 1,000,000$ vectores)**
 
 Dado que $m_L \approx \frac{1}{\ln(M)}$, la probabilidad de que un vector alcance al menos la capa $k$ es $P(l \ge k) = M^{-k}$. Por lo tanto, el número esperado de nodos en cada capa es $E[N_{\ge k}] = \frac{N}{M^k}$:
 
@@ -22,7 +22,7 @@ Dado que $m_L \approx \frac{1}{\ln(M)}$, la probabilidad de que un vector alcanc
 - *Capa $\ge 2$:* $\frac{1,000,000}{16^2} = \frac{1,000,000}{256} = 3,906.25 \approx \mathbf{3,906\text{ nodos}}$ ($0.39\%$)
 - *Capa $\ge 3$:* $\frac{1,000,000}{16^3} = \frac{1,000,000}{4,096} = 244.14 \approx \mathbf{244\text{ nodos}}$ ($0.024\%$)
 
-*2. Simulación en Python y comparación con el valor teórico*
+**2. Simulación en Python y comparación con el valor teórico**
 
 Código utilizado:
 python
@@ -45,26 +45,26 @@ capa >= 2: simulado=  4,005  teórico=    3,906
 capa >= 3: simulado=    270  teórico=      244
 
 
-*Comparación:* Los resultados simulados coinciden muy de cerca con los valores teóricos esperados ($62,675$ vs. $62,500$ en capa $\ge 1$; $4,005$ vs. $3,906$ en capa $\ge 2$; y $270$ vs. $244$ en capa $\ge 3$). Las pequeñas diferencias se deben a la varianza natural del muestreo aleatorio con $N = 1,000,000$, confirmando que la distribución exponencial reduce la cantidad de nodos a razón de un factor de $\frac{1}{16}$ por cada capa que se sube.
+**Comparación:** Los resultados simulados coinciden muy de cerca con los valores teóricos esperados ($62,675$ vs. $62,500$ en capa $\ge 1$; $4,005$ vs. $3,906$ en capa $\ge 2$; y $270$ vs. $244$ en capa $\ge 3$). Las pequeñas diferencias se deben a la varianza natural del muestreo aleatorio con $N = 1,000,000$, confirmando que la distribución exponencial reduce la cantidad de nodos a razón de un factor de $\frac{1}{16}$ por cada capa que se sube.
 
-*3. ¿Por qué es bueno para la velocidad de búsqueda que haya pocos hubs en las capas altas?*
+**3. ¿Por qué es bueno para la velocidad de búsqueda que haya pocos hubs en las capas altas?**
 
 Tener muy pocos nodos (hubs) en las capas superiores permite que la búsqueda greedy inicial (con ef = 1) avance con enlaces de largo alcance ("autopistas") evaluando distancias contra apenas unas decenas o cientos de vectores en lugar de explorar un millón de nodos. De esta manera, el algoritmo se aproxima rápidamente a la región correcta del espacio vectorial en tiempo logarítmico $O(\log N)$ antes de realizar la búsqueda exhaustiva en la capa base (capa 0).
 
 
 ## T2 · ef, k y el tamaño de la cola
 
-_Evidencia:_ … 
+_Evidencia:_
 
 ![T2](https://github.com/Azidian/WorkshopRAG/blob/main/evidencias/T2.png?raw=true)
 
 _Mi respuesta / análisis:_
 
-*Respuesta 1:* El problema es que el valor de ef es menor que la cantidad de vecinos solicitados (k). Se recomienda que ef ≥ k, ya que este parámetro controla la amplitud de búsqueda y la cantidad de candidatos considerados. Si se solicitan 10 vecinos y ef = 5, la búsqueda puede tener dificultades para encontrar los 10 vecinos más cercanos con buena calidad. Por eso, se debe aumentar ef al menos hasta 10 y, si es necesario, utilizar un valor mayor para mejorar el recall, teniendo en cuenta que esto puede aumentar el tiempo de búsqueda.
+**Respuesta 1:** El problema es que el valor de ef es menor que la cantidad de vecinos solicitados (k). Se recomienda que ef ≥ k, ya que este parámetro controla la amplitud de búsqueda y la cantidad de candidatos considerados. Si se solicitan 10 vecinos y ef = 5, la búsqueda puede tener dificultades para encontrar los 10 vecinos más cercanos con buena calidad. Por eso, se debe aumentar ef al menos hasta 10 y, si es necesario, utilizar un valor mayor para mejorar el recall, teniendo en cuenta que esto puede aumentar el tiempo de búsqueda.
 
-*Respuesta 2:* Conviene comenzar con un valor de ef igual o superior a k. Si el recall es bajo y se necesita encontrar vecinos más cercanos, se debe aumentar ef. Esto permite explorar más candidatos y mejorar la calidad de los resultados, aunque puede incrementar el tiempo de búsqueda. Por tanto, el valor debe ajustarse según el equilibrio deseado entre velocidad y calidad.
+**Respuesta 2:** Conviene comenzar con un valor de ef igual o superior a k. Si el recall es bajo y se necesita encontrar vecinos más cercanos, se debe aumentar ef. Esto permite explorar más candidatos y mejorar la calidad de los resultados, aunque puede incrementar el tiempo de búsqueda. Por tanto, el valor debe ajustarse según el equilibrio deseado entre velocidad y calidad.
 
-*Respuesta 3:* Sí, se puede modificar ef sin reconstruir el índice, porque es un parámetro que controla la búsqueda durante las consultas. En cambio, ef_construction determina la amplitud de búsqueda durante la construcción del grafo y afecta su calidad. Por eso, ef permite ajustar el equilibrio entre velocidad y recall sin necesidad de volver a construir el índice, mientras que modificar los parámetros de construcción puede requerir reconstruirlo.
+**Respuesta 3:** Sí, se puede modificar ef sin reconstruir el índice, porque es un parámetro que controla la búsqueda durante las consultas. En cambio, ef_construction determina la amplitud de búsqueda durante la construcción del grafo y afecta su calidad. Por eso, ef permite ajustar el equilibrio entre velocidad y recall sin necesidad de volver a construir el índice, mientras que modificar los parámetros de construcción puede requerir reconstruirlo.
 .
 
 
