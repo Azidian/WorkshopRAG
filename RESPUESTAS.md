@@ -280,7 +280,8 @@ _Mi respuesta / análisis:_
 **Evidencia:**
 [RESPUESTAS.md](evidencias/RESPUESTAS.md)
 
-_Mi respuesta / análisis:_
+**Mi respuesta / análisis:**
+[RESPUESTAS.md](evidencias/RESPUESTAS.md)
 
 
 ## B2 · Experimentos con chunk_size, k y score_threshold
