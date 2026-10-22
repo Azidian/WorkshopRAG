@@ -54,9 +54,9 @@ Tener muy pocos nodos (hubs) en las capas superiores permite que la búsqueda gr
 
 ## T2 · ef, k y el tamaño de la cola
 
-_Evidencia:_ …
+_Evidencia:_ … 
 
-https://github.com/Azidian/WorkshopRAG/blob/main/evidencias/T2.png
+![T2](https://github.com/Azidian/WorkshopRAG/blob/main/evidencias/T2.png?raw=true)
 
 _Mi respuesta / análisis:_
 
@@ -150,6 +150,35 @@ Además ofrece persistencia, filtros por metadata y acceso concurrente.
 _Evidencia:_ …
 
 _Mi respuesta / análisis:_
+
+### 1. Cuenta
+
+Cada consulta compara contra 1 millón de vectores de 768 dimensiones:
+
+    10^6 vectores × 768 multiplicaciones = 768 × 10^6 mult/consulta
+
+Con 100 consultas por segundo:
+
+    768 × 10^6 mult/consulta × 100 consultas/s = 76 800 × 10^6 mult/s
+
+### 2. Notación científica y por qué la exactitud deja de ser viable
+
+*≈ 7,68 × 10^10 multiplicaciones por segundo* (casi 77 mil millones).
+
+Ser exacto obliga a comparar cada consulta contra todos los vectores, así que
+el costo crece linealmente: con 10 millones de
+vectores serían 7,68 × 10^11 mult/s, y con mil millones, 7,68 × 10^13 mult/s.
+Además, cada consulta tendría que leer unos 3 GB de vectores de memoria
+(10^6 × 768 × 4 bytes), lo que a 100 consultas por segundo exigiría cerca de
+300 GB/s de ancho de banda, más de lo que ofrece un servidor típico. El
+hardware necesario crece al mismo ritmo que los datos, y eso no es sostenible.
+
+### 3. Qué se sacrifica y qué se gana en ANN
+
+Se sacrifica la garantía de devolver siempre el vecino más cercano real
+(el recall puede ser menor a 100 %), y se gana una búsqueda órdenes de magnitud
+más rápida, con un costo que crece de forma aproximadamente logarítmica en
+lugar de lineal.
 
 
 ---
