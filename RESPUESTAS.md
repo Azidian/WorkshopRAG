@@ -189,7 +189,22 @@ lugar de lineal.
 
 _Evidencia:_ …
 
-_Mi respuesta / análisis:_
+**Mi respuesta / análisis:** 
+| Pregunta | Respuesta | Fuente esperada / recuperada |
+| --- | --- | --- |
+| ¿Cuál es el precio del plan Enterprise de CloudSync Pro? | El plan Enterprise de CloudSync Pro cuesta **$49/mes por usuario** con compromiso anual.
+
+ | CloudSync Pro — Precios |
+| ¿Cuántos días pueden trabajar remotamente los empleados? | Los empleados pueden trabajar de forma remota hasta **3 días por semana**, con aprobación del jefe directo.
+
+ | Política de trabajo remoto |
+| ¿Qué pasa con los reembolsos mayores a $100? | Los reembolsos mayores a $100 requieren aprobación del supervisor y, una vez aprobados, se procesan en 3 a 5 días hábiles al método de pago original.
+
+ | Política de reembolsos |
+| ¿Qué ocurre durante la primera semana de onboarding? | Durante la primera semana se completan módulos obligatorios de seguridad, cumplimiento y cultura de la empresa.
+
+ | Onboarding |
+| ¿Cuál es la política para llevar mascotas a la oficina? *(Ejemplo de pregunta fuera de los documentos)* | La información no se encuentra en los documentos disponibles. *(El modelo no encuentra contexto relevante y declina la respuesta o indica que no hay datos)* | N/A (Sin fuente recuperada) |
 
 
 ## A2 · Tu propio corpus de documentos
