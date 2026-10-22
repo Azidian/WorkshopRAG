@@ -41,7 +41,7 @@ La parte práctica integra **Python, Google Colab, LangChain, NVIDIA NIM, Qdrant
 | A1 | Ejecuta la app RAG de punta a punta | 4 | ✅ | Notebook 02b y [RESPUESTAS.md](RESPUESTAS.md), cinco consultas |
 | A2 | Tu propio corpus de documentos | 6 | ✅ | Notebook 02b y [RESPUESTAS.md](RESPUESTAS.md), consultas al corpus |
 | A3 | Ingeniería del prompt (antes y después) | 5 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), diff y comparación |
-| A4 | Muestra el score de similitud en las fuentes | 5 | ◐ | [RESPUESTAS.md](RESPUESTAS.md)|
+| A4 | Muestra el score de similitud en las fuentes | 5 | ✅ | [RESPUESTAS.md](RESPUESTAS.md)|
 | B1 | Ejecuta el RAG de papers y evalúa con ground truth | 6 | ✅ | Notebook 03 y [RESPUESTAS.md](RESPUESTAS.md), Q1–Q5 |
 | B2 | Experimentos con `chunk_size`, `k` y `score_threshold` | 8 | ✅ | Notebook 03 y [RESPUESTAS.md](RESPUESTAS.md), nueve configuraciones |
 | B3 | Preguntas trampa: ¿el RAG admite que no sabe? | 6 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), tres preguntas trampa |
