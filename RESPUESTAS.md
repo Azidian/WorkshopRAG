@@ -277,7 +277,8 @@ _Mi respuesta / análisis:_
 
 ## B1 · Ejecuta el RAG de papers y evalúa con el ground truth
 
-_Evidencia:_ …
+**Evidencia:**
+[RESPUESTAS.md](evidencias/RESPUESTAS.md)
 
 _Mi respuesta / análisis:_
 
