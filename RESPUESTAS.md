@@ -317,23 +317,69 @@ Son solo 5 preguntas, así que el 0.38 es un punto de partida, no un valor defin
 
 ## B2 · Experimentos con chunk_size, k y score_threshold
 
-_Evidencia:_ …
+_Evidencia:_ Celda con `build_store`/`build_chain` y los 3 experimentos en el notebook
 
 _Mi respuesta / análisis:_
+
+**Experimento 1 — chunk_size** (k=5, threshold=0.25 fijos):
+
+| chunk_size | chunks | aciertos (de 5) | observación |
+|---|---|---|---|
+| 400 | 326 | 5/5 | Chunks pequeños y numerosos; todas las respuestas correctas |
+| 900 | 150 | 3/5* | 2 fallos por 503 (sobrecarga de NVIDIA), no por mala recuperación |
+| 1500 | 96 | 5/5 | Chunks grandes y pocos; todas correctas, respuestas algo más completas |
+
+**Experimento 2 — k** (chunk_size=900, threshold=0.25 fijos):
+
+| k | aciertos (de 5) | observación |
+|---|---|---|
+| 3 | 4/5* | 1 timeout en la pregunta del BLEU |
+| 5 | 5/5 | Todas correctas |
+| 8 | 5/5 | Todas correctas, una necesitó reintento por sobrecarga |
+
+**Experimento 3 — score_threshold** (chunk_size=900, k=5 fijos):
+
+| threshold | aciertos (de 5) | observación |
+|---|---|---|
+| 0.15 | 5/5 | Todas correctas, una con reintento |
+| 0.25 | 5/5 | Todas correctas (configuración del notebook) |
+| 0.40 | 4/5* | 1 timeout en la pregunta del BLEU |
+
+_\* Los "fallos" marcados no son errores de recuperación o de calidad de respuesta — son errores de red/infraestructura (503 "Service overloaded" o timeout de NVIDIA) que ocurrieron al azar independientemente de la configuración probada._
+
+**Conclusión:**
+
+Sobre este corpus pequeño (solo 2 papers), ninguno de los tres parámetros (chunk_size, k, score_threshold) movió significativamente la calidad de las respuestas dentro de los rangos probados: en casi todos los casos el RAG respondió correctamente y citó el paper correcto, sin importar si había 326 chunks pequeños o 96 grandes, ni si k era 3 u 8, ni si el umbral era permisivo (0.15) o estricto (0.40). Esto tiene sentido porque las 5 preguntas del quiz tienen respuestas muy explícitas en el texto (cifras y definiciones concretas), así que casi cualquier estrategia de recuperación razonable encuentra el fragmento correcto. La configuración del notebook (900/120, k=5, threshold=0.25) resultó un punto de partida perfectamente válido — no encontré evidencia de que otra combinación fuera claramente mejor. El único parámetro que sí tuvo impacto real sobre los resultados fue externo al pipeline: la disponibilidad del servicio de NVIDIA, que introdujo errores 503/timeout de forma aleatoria en varias configuraciones. En un corpus más grande o con preguntas más ambiguas, esperaría que chunk_size y k sí mostraran diferencias más claras.
 
 
 ## B3 · Preguntas trampa: ¿el RAG admite que no sabe?
 
-_Evidencia:_ …
+_Evidencia:_ 3 preguntas trampa ejecutadas en el notebook
 
 _Mi respuesta / análisis:_
+
+| # | Pregunta (resumen) | Clasificación |
+|---|---|---|
+| 1 | Resultados de benchmark de GPT-4 en el paper de Attention | Admite que no sabe — además explica por qué (el paper es de 2017, anterior a GPT-4) |
+| 2 | Comparación de RAG vs GPT-4 en QA de dominio abierto | Admite que no sabe — aclara contra qué modelos sí se compara el paper |
+| 3 | BLEU del Transformer en WMT 2020 | Admite que no sabe — reitera que solo reporta WMT 2014 |
+
+El modelo no inventó ninguna respuesta. En los tres casos reconoció la ausencia de evidencia en el contexto recuperado y, en vez de solo negarse, aportó contexto correcto y verificable (qué sí reportan los papers), lo cual es un comportamiento robusto frente a preguntas trampa — probablemente gracias al prompt del sistema que exige basarse únicamente en el contexto recuperado.
 
 
 ## B4 · Preguntas en español sobre papers en inglés
 
-_Evidencia:_ …
+_Evidencia:_ 3 pares de preguntas ES/EN ejecutadas en el notebook
 
 _Mi respuesta / análisis:_
+
+| Pregunta | Chunks recuperados (ES) | Chunks recuperados (EN) | ¿Misma calidad? |
+|---|---|---|---|
+| BLEU del Transformer big | 5/5 de attention_paper.pdf | 5/5 de attention_paper.pdf | Sí, idéntica |
+| Dos variantes de RAG | 5/5 de rag_paper.pdf | 5/5 de rag_paper.pdf | Sí, idéntica |
+| Cabezas de atención | 5/5 de attention_paper.pdf | 5/5 de attention_paper.pdf | Sí, idéntica |
+
+**Hipótesis:** la recuperación funcionó igual de bien en español que en inglés, recuperando exactamente los mismos documentos fuente y produciendo respuestas de calidad equivalente en ambos idiomas. Esto sugiere que `nemotron-3-embed-1b` genera representaciones vectoriales multilingües bien alineadas — el embedding de una pregunta en español cae cerca, en el espacio vectorial, del embedding del texto en inglés con el mismo significado semántico, no literal. Lo comprobaría formalmente comparando los scores de similitud coseno exactos (no solo qué documentos se recuperan) entre la versión ES y EN de cada pregunta, y repitiendo con preguntas más ambiguas o con vocabulario técnico menos directo, donde la alineación cross-lingual podría degradarse más.
 
 
 ## B5 — Quiz propio con Ground Truth
