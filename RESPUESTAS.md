@@ -336,11 +336,59 @@ _Evidencia:_ …
 _Mi respuesta / análisis:_
 
 
-## B5 · Escribe tu propio quiz con ground truth
+## B5 — Quiz propio con Ground Truth
 
-_Evidencia:_ …
+### Objetivo
 
-_Mi respuesta / análisis:_
+Diseñar tres preguntas originales sobre los artículos *Attention Is All You Need* y *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks*, definiendo sus respuestas de referencia (*ground truth*) y evaluando la precisión del sistema RAG.
+
+La tercera pregunta requiere integrar información de ambos artículos, con el fin de comprobar si el sistema puede relacionar conceptos provenientes de diferentes documentos.
+
+### Preguntas diseñadas y Ground Truth
+
+**Pregunta 6 — Positional Encoding**
+
+*Why does the Transformer use positional encodings, and which mathematical functions are used to generate them?*
+
+**Ground Truth:** El Transformer utiliza codificaciones posicionales porque no incorpora mecanismos de recurrencia ni convolución, por lo que necesita representar el orden de los tokens. Para ello utiliza funciones seno y coseno de diferentes frecuencias, sumadas a los embeddings de entrada.
+
+**Fuente:** *Attention Is All You Need*, sección 3.5 — Positional Encoding.
+
+**Pregunta 7 — Retriever DPR**
+
+*How does the DPR retriever represent questions and documents to retrieve relevant information in RAG?*
+
+**Ground Truth:** DPR utiliza una arquitectura bi-encoder con dos codificadores BERT para transformar preguntas y documentos en representaciones vectoriales densas. La relevancia se calcula mediante el producto interno de los vectores y se recuperan los documentos con mayor puntuación mediante Maximum Inner Product Search (MIPS).
+
+**Fuente:** *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks*, sección 2.2 — Retriever: DPR.
+
+**Pregunta 8 — Integración Transformer y RAG**
+
+*How does the Transformer encoder-decoder attention mechanism help explain how RAG uses retrieved documents to generate context-aware answers?*
+
+**Ground Truth:** El mecanismo encoder-decoder attention permite que el decoder atienda a las representaciones generadas por el encoder durante la generación. RAG utiliza recuperación de documentos mediante DPR y los incorpora como contexto a un generador BART basado en Transformer. La relación entre ambos artículos es que la recuperación aporta información externa y el generador utiliza mecanismos de atención para aprovechar las representaciones del contexto durante la generación de respuestas.
+
+**Fuentes:**
+- *Attention Is All You Need*, sección 3.2.3 — Applications of Attention in our Model.
+- *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks*, secciones 2.1–2.3 — RAG Models, Retriever y Generator.
+
+### Tabla de resultados
+
+| Pregunta | ¿Respuesta correcta? | ¿Fuente correcta? | Observación |
+|---|---|---|---|
+| Q6 — Positional Encoding | Sí | Sí | El modelo explicó la ausencia de recurrencia y convolución, identificó las funciones seno y coseno y presentó las ecuaciones correspondientes. Recuperó cinco fragmentos de *Attention Is All You Need*. |
+| Q7 — Retriever DPR | Sí | Sí | El modelo explicó correctamente la arquitectura bi-encoder, las representaciones densas, el producto interno y MIPS. Recuperó cinco fragmentos del paper RAG. |
+| Q8 — Transformer + RAG | Parcial | Sí, ambos papers | El modelo recuperó información de los dos artículos y mencionó BART y encoder-decoder attention, pero indicó que no existía evidencia suficiente para establecer la relación solicitada. No construyó una explicación completa. |
+
+### Análisis de los resultados
+
+Las preguntas Q6 y Q7 fueron respondidas correctamente, utilizando información respaldada por los documentos recuperados. En ambos casos, el modelo identificó los conceptos técnicos relevantes y utilizó fuentes del artículo correspondiente.
+
+En la pregunta Q8, diseñada para exigir la combinación de información de ambos papers, el sistema recuperó fragmentos de los dos artículos, pero no logró integrarlos en una respuesta completa. Aunque identificó que RAG utiliza BART y que el Transformer incorpora atención encoder-decoder, consideró que los fragmentos no permitían explicar directamente su relación.
+
+Este comportamiento evidencia que recuperar documentos relevantes no garantiza que el modelo pueda realizar correctamente una síntesis entre diferentes fuentes. También muestra un comportamiento conservador: en lugar de afirmar una relación que consideraba insuficientemente respaldada, el modelo expresó su incertidumbre.
+
+**Resultado final:** 2 de 3 respuestas completas, con una respuesta parcialmente correcta. Las tres preguntas recuperaron fuentes pertinentes, incluyendo ambos artículos en la pregunta de integración.
 
 
 # Bloque R · Reflexión
