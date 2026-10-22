@@ -205,9 +205,20 @@ lugar de lineal.
 
 ## A2 · Tu propio corpus de documentos
 
-_Evidencia:_ …
+**Evidencia:**
+![A2_CORPUS](https://github.com/Azidian/WorkshopRAG/blob/main/evidencias/A1_gradio1.png?raw=true)
+![A2_CORPUS2](https://github.com/Azidian/WorkshopRAG/blob/main/evidencias/A1_gradio2.png?raw=true)
+![A2_CORPUS3](https://github.com/Azidian/WorkshopRAG/blob/main/evidencias/A1_gradio3.png?raw=true)
 
-_Mi respuesta / análisis:_
+**Mi respuesta / análisis:**
+| Pregunta | Respuesta | Fuente recuperada |
+| :--- | :--- | :--- |
+| ¿Qué días hay que ir a la oficina? | No tengo esa información en el contexto. | N/A (Sin fuente) |
+| ¿Cuántos revisores necesita un pull request para entrar a main? | Al menos 2 revisores. | Flujo de trabajo con Git |
+| ¿Se puede desplegar a producción un viernes? | No, está prohibido desplegar los viernes. | Despliegues a producción |
+| ¿Cuánto cubre la empresa de un curso o certificación? | No tengo esa información en el contexto. | N/A (Sin fuente) |
+| ¿En cuánto tiempo se debe responder un ticket crítico? | Máximo 1 hora. | Soporte a clientes y tiempos de respuesta |
+| ¿Cuánto es el salario de un desarrollador junior? / ¿La empresa tiene parqueadero para empleados? *(Pregunta fuera de contexto)* | No tengo esa información en el contexto proporcionado. Los documentos disponibles cubren onboarding, vacaciones, horario laboral y trabajo híbrido, pero no mencionan salarios ni disponibilidad de parqueadero. | N/A (Sin fuente) |
 
 
 ## A3 · Ingeniería del prompt (antes y después)
