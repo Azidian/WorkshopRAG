@@ -29,7 +29,7 @@ La parte práctica integra **Python, Google Colab, LangChain, NVIDIA NIM, Qdrant
 
 ## Progreso de actividades
 
-**Leyenda:** ✅ documentada con resultados · ◐ desarrollo descrito, pero falta verificar alguna evidencia o medición · — sin evidencia suficiente para confirmar.
+**Leyenda:** ✅ documentada con resultados.
 
 | ID | Tarea | Puntos | Estado | Evidencia / estado de verificación |
 |---|---|---:|:---:|---|
