@@ -206,9 +206,6 @@ lugar de lineal.
 ## A2 · Tu propio corpus de documentos
 
 **Evidencia:**
-![A2_CORPUS](https://github.com/Azidian/WorkshopRAG/blob/main/evidencias/A1_gradio1.png?raw=true)
-![A2_CORPUS2](https://github.com/Azidian/WorkshopRAG/blob/main/evidencias/A1_gradio2.png?raw=true)
-![A2_CORPUS3](https://github.com/Azidian/WorkshopRAG/blob/main/evidencias/A1_gradio3.png?raw=true)
 
 **Mi respuesta / análisis:**
 | Pregunta | Respuesta | Fuente recuperada |
