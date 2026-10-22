@@ -28,9 +28,43 @@ _Mi respuesta / análisis:_
 
 ## T4 · El invariante de FAISSVectorStore
 
-_Evidencia:_ …
+### 1. Tabla posición → documento
 
-_Mi respuesta / análisis:_
+El índice FAISS no cambia: sigue guardando 4 vectores en las posiciones 0–3.
+Solo cambia la lista `self.documents`, de la que se borró B.
+
+| Posición | Lo que FAISS cree que hay | `documents` antes | `documents` después de borrar B |
+|---|---|---|---|
+| 0 | vector de A | A | A |
+| 1 | vector de B | B | C |
+| 2 | vector de C | C | D |
+| 3 | vector de D | D | (no existe) |
+
+La búsqueda sigue devolviendo las posiciones `[1, 2, 3]`, pero ahora se traducen así:
+
+| Posición devuelta | Antes | Ahora |
+|---|---|---|
+| 1 | B (correcto) | C (incorrecto) |
+| 2 | C (correcto) | D (incorrecto) |
+| 3 | D (correcto) | `IndexError` |
+
+Resultado: `[C, D, IndexError]` en lugar de `[B, C, D]`.
+
+### 2. Error silencioso vs. excepción
+
+- **Errores silenciosos:** las posiciones 1 y 2. Devuelven un documento real, pero equivocado, y no se lanza ninguna excepción. El LLM recibiría
+  contexto incorrecto y respondería con seguridad algo falso.
+- **Excepción:** la posición 3. La lista ahora tiene 3 elementos (posiciones 0–2),
+  así que `documents[3]` lanza `IndexError`.
+
+### 3. Relación con Qdrant
+
+FAISS solo guarda vectores y los une con el texto y la metadata por posición en
+una lista aparte, así que el programador debe mantener ese invariante a mano.
+Cualquier borrado o reordenamiento lo rompe sin avisar. Qdrant guarda el vector,
+un ID y el *payload* (texto y metadata) juntos en un mismo registro. Al borrar un
+punto se elimina todo a la vez y no hay una lista paralela que desincronizar.
+Además ofrece persistencia, filtros por metadata y acceso concurrente.
 
 
 ## T5 · El costo de la fuerza bruta
