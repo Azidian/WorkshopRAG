@@ -266,10 +266,8 @@ Ninguna instrucción la ignoró del todo, pero sí hay detalles. En la pregunta 
 
 ## A4 · Muestra el score de similitud en las fuentes
 
-## A4 · Muestra el score de similitud en las fuentes
-
 **Evidencia:**
-
+![A4](evidencias/A4.png)
 
 Cambios en el notebook: `build_pipeline` ahora devuelve también el `vectorstore`, y `chat()` usa `vectorstore.similarity_search_with_score(question, k=3)` para mostrar cada fuente con su score coseno. Los que quedan por debajo de 0.3 se marcan como "debajo del umbral".
 
