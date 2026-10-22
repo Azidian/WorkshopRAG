@@ -266,11 +266,36 @@ Ninguna instrucción la ignoró del todo, pero sí hay detalles. En la pregunta 
 
 ## A4 · Muestra el score de similitud en las fuentes
 
-_Evidencia:_ …
+## A4 · Muestra el score de similitud en las fuentes
 
-_Mi respuesta / análisis:_
+**Evidencia:**
 
 
+Cambios en el notebook: `build_pipeline` ahora devuelve también el `vectorstore`, y `chat()` usa `vectorstore.similarity_search_with_score(question, k=3)` para mostrar cada fuente con su score coseno. Los que quedan por debajo de 0.3 se marcan como "debajo del umbral".
+
+| # | Pregunta | Tipo | Fuente 1 (score) | Fuente 2 (score) | Fuente 3 (score) |
+|---|----------|------|------------------|------------------|------------------|
+| 1 | ¿Qué días hay que ir a la oficina? | Buena | Horario laboral y trabajo híbrido (0.409) ✅ | Despliegues a producción (0.307) | Soporte a clientes (0.253) |
+| 2 | ¿Se puede desplegar a producción un viernes? | Buena | Despliegues a producción (0.660) ✅ | Soporte a clientes (0.207) | Horario laboral (0.200) |
+| 3 | ¿Cuánto cuesta el plan Pyme de CodeAndes Cloud? | Buena | Planes y precios de CodeAndes Cloud (0.653) ✅ | Horario laboral (0.357) | Auxilio de educación (0.323) |
+| 4 | ¿Cuánto es el salario de un desarrollador junior? | Fuera | PENDIENTE | PENDIENTE | PENDIENTE |
+| 5 | ¿La empresa tiene parqueadero para empleados? | Fuera | Vacaciones y días libres (0.246) | Auxilio de educación (0.220) | Planes y precios (0.165) |
+
+✅ = documento que de verdad tiene la respuesta.
+
+**Mi respuesta / análisis:**
+
+**Lo que muestran los scores**
+En las 3 preguntas buenas el documento correcto siempre quedó de primero, con scores entre 0.409 y 0.660. Pero también se colaron documentos que no tienen nada que ver y aun así pasaron el umbral de 0.3: "Despliegues a producción" con 0.307 en la pregunta de la oficina, y "Horario laboral" (0.357) y "Auxilio de educación" (0.323) en la del plan Pyme. En las preguntas fuera de contexto ningún documento pasó de 0.246.
+
+**El problema con 0.3**
+Con el umbral actual el modelo recibe chunks irrelevantes como contexto. Esta vez no inventó nada porque el prompt lo obliga a citar y a no salirse del contexto, pero es "material" que podría usar para alucinar. Por ejemplo, en la pregunta del plan Pyme le llegaron 3 documentos cuando solo uno servía.
+
+**Umbral propuesto: 0.38**
+El score más bajo de una respuesta correcta fue 0.409 (la de la oficina) y el más alto de un documento irrelevante fue 0.357. Un umbral de 0.38 queda justo en el medio: deja pasar todas las fuentes correctas y bloquea todas las irrelevantes que vi. No lo subiría mucho más porque la pregunta de la oficina quedó con solo 0.409, y una pregunta redactada distinto podría quedar por debajo y el sistema diría que no sabe cuando sí sabe.
+
+**Limitación**
+Son solo 5 preguntas, así que el 0.38 es un punto de partida, no un valor definitivo. Con más preguntas de prueba se podría ajustar mejor.
 ---
 
 # Bloque B · RAG sobre papers
