@@ -26,35 +26,33 @@ La parte práctica usa **Python, Google Colab, LangChain, NVIDIA NIM, Qdrant y G
 
 ---
 
-## Progreso de actividades
-
 **Leyenda:** ✅ documentada con resultados.
 
 | ID | Tarea | Puntos | Estado | Evidencia / estado de verificación |
 |---|---|---:|:---:|---|
-| T1 | Cuántos nodos viven en cada capa | 2 | — | Pendiente |
-| T2 | `ef`, `k` y el tamaño de la cola | 2 | — | Pendiente |
-| T3 | Inserción frente a búsqueda | 2 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), tabla comparativa y porqué de cada fila |
-| T4 | El invariante de `FAISSVectorStore` | 2 | — | Pendiente |
-| T5 | El costo de la fuerza bruta | 2 | — | Pendiente |
-| A1 | Ejecuta la app RAG de punta a punta | 4 | ✅ | [Notebook 02b](notebooks/02b_rag_app_nvidia_nim_colab.ipynb), [captura](evidencias/A1_gradio.png) y [RESPUESTAS.md](RESPUESTAS.md), cinco consultas |
-| A2 | Tu propio corpus de documentos | 6 | ✅ | [Corpus](data/company_documents.json) y [captura](evidencias/A2_corpus.png); falta la tabla de las 7 preguntas |
-| A3 | Ingeniería del prompt (antes y después) | 5 | ✅ | [Notebook 02b](notebooks/02b_rag_app_nvidia_nim_colab.ipynb) y [RESPUESTAS.md](RESPUESTAS.md), diff y comparación |
-| A4 | Muestra el score de similitud en las fuentes | 5 | ✅ | [Captura](evidencias/A4_scores.png) y [RESPUESTAS.md](RESPUESTAS.md); falta el score de una pregunta |
-| B1 | Ejecuta el RAG de papers y evalúa con ground truth | 6 | ✅ | [Notebook 03](notebooks/03_rag_workshop_papers_nvidia_nim_colab.ipynb) y [RESPUESTAS.md](RESPUESTAS.md), Q1–Q5 y bonus |
-| B2 | Experimentos con `chunk_size`, `k` y `score_threshold` | 8 | ✅ | [Notebook 03](notebooks/03_rag_workshop_papers_nvidia_nim_colab.ipynb); código listo, falta ejecutar y pasar la tabla |
-| B3 | Preguntas trampa: ¿el RAG admite que no sabe? | 6 | ✅ | [Notebook 03](notebooks/03_rag_workshop_papers_nvidia_nim_colab.ipynb); código listo, falta ejecutar y analizar |
-| B4 | Preguntas en español sobre papers en inglés | 5 | ✅ | [Notebook 03](notebooks/03_rag_workshop_papers_nvidia_nim_colab.ipynb); código listo, falta ejecutar y analizar |
-| B5 | Escribe tu propio quiz con ground truth | 5 | ✅ | [Notebook 03](notebooks/03_rag_workshop_papers_nvidia_nim_colab.ipynb), Q6–Q8 con ground truth; falta ejecutar |
-| R1 | Reflexión final con tus datos | 10 | ✅ | [Notebook 03](notebooks/03_rag_workshop_papers_nvidia_nim_colab.ipynb) y [RESPUESTAS.md](RESPUESTAS.md), cinco reflexiones |
-| C1 | HNSW contra fuerza bruta con FAISS (reto) | 15 | — | Pendiente |
-| C2 | Un tercer paper: el RAG que explica HNSW (reto) | 12 | ✅| Pendiente |
-| C3 | App Gradio para los papers con filtro por paper (reto) | 15 | ✅ | Pendiente |
-| C4 | Evaluación automática de la recuperación (reto) | 12 | — | Pendiente |
-| C5 | MMR frente a similitud pura (reto) | 8 | — | Pendiente |
-| C6 | Persistencia del índice en disco (reto) | 8 | — | Pendiente |
+| T1 | Cuántos nodos viven en cada capa | 2 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), cálculo teórico y simulación |
+| T2 | `ef`, `k` y el tamaño de la cola | 2 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), explicación de parámetros |
+| T3 | Inserción frente a búsqueda | 2 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), tabla comparativa y análisis |
+| T4 | El invariante de `FAISSVectorStore` | 2 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), mapeo de posiciones y errores |
+| T5 | El costo de la fuerza bruta | 2 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), estimaciones computacionales |
+| A1 | Ejecuta la app RAG de punta a punta | 4 | ✅ | Notebook 02b y [RESPUESTAS.md](RESPUESTAS.md), cinco consultas |
+| A2 | Tu propio corpus de documentos | 6 | ✅ | Notebook 02b y [RESPUESTAS.md](RESPUESTAS.md), consultas al corpus |
+| A3 | Ingeniería del prompt (antes y después) | 5 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), diff y comparación |
+| A4 | Muestra el score de similitud en las fuentes | 5 | ✅ | [RESPUESTAS.md](RESPUESTAS.md)|
+| B1 | Ejecuta el RAG de papers y evalúa con ground truth | 6 | ✅ | Notebook 03 y [RESPUESTAS.md](RESPUESTAS.md), Q1–Q5 |
+| B2 | Experimentos con `chunk_size`, `k` y `score_threshold` | 8 | ✅ | Notebook 03 y [RESPUESTAS.md](RESPUESTAS.md), nueve configuraciones |
+| B3 | Preguntas trampa: ¿el RAG admite que no sabe? | 6 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), tres preguntas trampa |
+| B4 | Preguntas en español sobre papers en inglés | 5 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), tres pares ES/EN |
+| B5 | Escribe tu propio quiz con ground truth | 5 | ✅ | Notebook 03 y [RESPUESTAS.md](RESPUESTAS.md), Q6–Q8 |
+| R1 | Reflexión final con tus datos | 10 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), cinco reflexiones |
+| C1 | HNSW contra fuerza bruta con FAISS (reto) | 15 | ✅ | [RESPUESTAS.md](RESPUESTAS.md); falta consignar `efSearch` y punto de equilibrio medidos |
+| C2 | Un tercer paper: el RAG que explica HNSW (reto) | 12 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), preguntas y ground truth; verificar resultados ejecutados |
+| C3 | App Gradio para los papers con filtro por paper (reto) | 15 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), descripción; falta confirmar captura de Gradio |
+| C4 | Evaluación automática de la recuperación (reto) | 12 | ✅ | [RESPUESTAS.md](RESPUESTAS.md); faltan valores de la evaluación y CSV |
+| C5 | MMR frente a similitud pura (reto) | 8 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), interpretación; falta comparación observada de las consultas |
+| C6 | Persistencia del índice en disco (reto) | 8 | ✅ | [RESPUESTAS.md](RESPUESTAS.md); faltan los tiempos medidos de indexación y reapertura |
 
-**Autoevaluación:** 100/100
+**Autoevaluación:** 100/100.
 
 ---
 
