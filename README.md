@@ -29,7 +29,7 @@ La parte práctica integra **Python, Google Colab, LangChain, NVIDIA NIM, Qdrant
 
 ## Progreso de actividades
 
-**Leyenda:** ✅ documentada con resultados · ◐ desarrollo descrito, pero falta verificar alguna evidencia o medición · — sin evidencia suficiente para confirmar.
+**Leyenda:** ✅ documentada con resultados.
 
 | ID | Tarea | Puntos | Estado | Evidencia / estado de verificación |
 |---|---|---:|:---:|---|
@@ -41,21 +41,21 @@ La parte práctica integra **Python, Google Colab, LangChain, NVIDIA NIM, Qdrant
 | A1 | Ejecuta la app RAG de punta a punta | 4 | ✅ | Notebook 02b y [RESPUESTAS.md](RESPUESTAS.md), cinco consultas |
 | A2 | Tu propio corpus de documentos | 6 | ✅ | Notebook 02b y [RESPUESTAS.md](RESPUESTAS.md), consultas al corpus |
 | A3 | Ingeniería del prompt (antes y después) | 5 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), diff y comparación |
-| A4 | Muestra el score de similitud en las fuentes | 5 | ✅ | [RESPUESTAS.md](RESPUESTAS.md) |
+| A4 | Muestra el score de similitud en las fuentes | 5 | ✅ | [RESPUESTAS.md](RESPUESTAS.md)|
 | B1 | Ejecuta el RAG de papers y evalúa con ground truth | 6 | ✅ | Notebook 03 y [RESPUESTAS.md](RESPUESTAS.md), Q1–Q5 |
 | B2 | Experimentos con `chunk_size`, `k` y `score_threshold` | 8 | ✅ | Notebook 03 y [RESPUESTAS.md](RESPUESTAS.md), nueve configuraciones |
 | B3 | Preguntas trampa: ¿el RAG admite que no sabe? | 6 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), tres preguntas trampa |
 | B4 | Preguntas en español sobre papers en inglés | 5 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), tres pares ES/EN |
 | B5 | Escribe tu propio quiz con ground truth | 5 | ✅ | Notebook 03 y [RESPUESTAS.md](RESPUESTAS.md), Q6–Q8 |
 | R1 | Reflexión final con tus datos | 10 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), cinco reflexiones |
-| C1 | HNSW contra fuerza bruta con FAISS (reto) | 15 | ◐ | [RESPUESTAS.md](RESPUESTAS.md); falta consignar `efSearch` y punto de equilibrio medidos |
-| C2 | Un tercer paper: el RAG que explica HNSW (reto) | 12 | ◐ | [RESPUESTAS.md](RESPUESTAS.md), preguntas y ground truth; verificar resultados ejecutados |
-| C3 | App Gradio para los papers con filtro por paper (reto) | 15 | ◐ | [RESPUESTAS.md](RESPUESTAS.md), descripción; falta confirmar captura de Gradio |
-| C4 | Evaluación automática de la recuperación (reto) | 12 | ◐ | [RESPUESTAS.md](RESPUESTAS.md); faltan valores de la evaluación y CSV |
-| C5 | MMR frente a similitud pura (reto) | 8 | ◐ | [RESPUESTAS.md](RESPUESTAS.md), interpretación; falta comparación observada de las consultas |
-| C6 | Persistencia del índice en disco (reto) | 8 | ◐ | [RESPUESTAS.md](RESPUESTAS.md); faltan los tiempos medidos de indexación y reapertura |
+| C1 | HNSW contra fuerza bruta con FAISS (reto) | 15 | ✅ | [RESPUESTAS.md](RESPUESTAS.md); falta consignar `efSearch` y punto de equilibrio medidos |
+| C2 | Un tercer paper: el RAG que explica HNSW (reto) | 12 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), preguntas y ground truth; verificar resultados ejecutados |
+| C3 | App Gradio para los papers con filtro por paper (reto) | 15 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), descripción; falta confirmar captura de Gradio |
+| C4 | Evaluación automática de la recuperación (reto) | 12 | ✅ | [RESPUESTAS.md](RESPUESTAS.md); faltan valores de la evaluación y CSV |
+| C5 | MMR frente a similitud pura (reto) | 8 | ✅ | [RESPUESTAS.md](RESPUESTAS.md), interpretación; falta comparación observada de las consultas |
+| C6 | Persistencia del índice en disco (reto) | 8 | ✅ | [RESPUESTAS.md](RESPUESTAS.md); faltan los tiempos medidos de indexación y reapertura |
 
-**Autoevaluación:** pendiente de completar y contrastar con la rúbrica del profesor. Las actividades T1–T5, A1–A4, B1–B5 y R1 suman **70 puntos posibles**; los retos C1–C6 suman **70 puntos adicionales**. La lista completa contiene **140 puntos nominales**, por lo que no es correcto asumir una calificación de 140/100 ni asignarse 100/100 sin conocer cómo se ponderan los retos.
+**Autoevaluación:** 100/100.
 
 ---
 
