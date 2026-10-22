@@ -187,7 +187,10 @@ lugar de lineal.
 
 ## A1 · Ejecuta la app RAG de punta a punta
 
-_Evidencia:_ …
+**Evidencia:** 
+![A1_gradio](evidencias/A1_gradio1.png)
+![A1_gradio](evidencias/A1_gradio2.png)
+![A1_gradio](evidencias/A1_gradio3.png)
 
 **Mi respuesta / análisis:** 
 
