@@ -366,6 +366,7 @@ Conviene separar ambos modelos porque cumplen funciones diferentes dentro del si
 ### 5. ¿Qué cambiarías para llevar este prototipo a producción?
 
 Para llevar el prototipo a producción, comenzaría por reemplazar la configuración de Qdrant en memoria por una base vectorial persistente, de manera que los documentos indexados no se pierdan al reiniciar la aplicación. También implementaría autenticación, permisos de acceso y almacenamiento seguro de las claves de API para proteger tanto los documentos como los servicios utilizados. En cuanto a la evaluación, crearía un conjunto de preguntas con respuestas esperadas, incluyendo preguntas sin respuesta en los documentos, y mediría la relevancia de los fragmentos recuperados y la precisión de las respuestas. Además, incorporaría registros y métricas para monitorear errores, tiempos de respuesta, calidad de recuperación y consumo de tokens. Finalmente, optimizaría parámetros como `k`, aplicaría caché cuando fuera conveniente y establecería límites de uso para controlar los costos. Estos cambios permitirían contar con un sistema más seguro, estable, medible y eficiente que el prototipo desarrollado en el notebook.
+
 ---
 
 # Retos
