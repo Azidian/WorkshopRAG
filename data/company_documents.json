@@ -1,0 +1,62 @@
+[
+  {
+    "id": "rrhh_001",
+    "title": "Horario laboral y trabajo híbrido",
+    "content": "En CodeAndes la jornada laboral es de lunes a viernes, de 8:00 a. m. a 5:00 p. m., con una hora de almuerzo. Todo el equipo trabaja en modalidad híbrida: se debe ir a la oficina de El Poblado los martes y jueves, y los demás días se puede trabajar desde casa. Las reuniones de planeación de cada sprint son presenciales y obligatorias. Si alguien necesita trabajar remoto un martes o jueves, debe pedir permiso a su líder de equipo con al menos un día de anticipación por Slack.",
+    "metadata": {"department": "recursos_humanos", "type": "policy"}
+  },
+  {
+    "id": "rrhh_002",
+    "title": "Vacaciones y días libres",
+    "content": "Cada empleado tiene 15 días hábiles de vacaciones al año, que se pueden tomar después de cumplir 6 meses en la empresa. Las vacaciones se solicitan en la plataforma interna PeopleHub con mínimo 15 días de anticipación y las aprueba el líder de equipo. Además, CodeAndes da un día libre adicional el día del cumpleaños del empleado. No se pueden tomar vacaciones durante la última semana de cada trimestre, porque es la semana de entregas a clientes.",
+    "metadata": {"department": "recursos_humanos", "type": "policy"}
+  },
+  {
+    "id": "rrhh_003",
+    "title": "Onboarding de nuevos desarrolladores",
+    "content": "Durante la primera semana, cada desarrollador nuevo recibe su portátil y accesos a GitHub, Slack y Jira. El lunes tiene una charla de bienvenida con el equipo de Talento Humano. Del martes al jueves completa los cursos internos de buenas prácticas de Git, seguridad de la información y el estándar de código de la empresa. El viernes se le asigna un mentor, que lo acompaña durante sus primeros 3 meses. La primera tarea real siempre es un issue pequeño marcado con la etiqueta good-first-issue.",
+    "metadata": {"department": "recursos_humanos", "type": "procedure"}
+  },
+  {
+    "id": "ing_001",
+    "title": "Flujo de trabajo con Git",
+    "content": "CodeAndes usa una estrategia basada en ramas cortas. Cada tarea se trabaja en una rama que sale de main y se nombra como feature/ID-del-ticket o fix/ID-del-ticket. Nadie puede hacer push directo a main. Todo cambio entra por un pull request que necesita la aprobación de al menos 2 revisores y que pase el pipeline de integración continua (pruebas unitarias y linter). Los pull requests no deben superar las 400 líneas cambiadas; si son más grandes, se deben dividir.",
+    "metadata": {"department": "ingenieria", "type": "procedure"}
+  },
+  {
+    "id": "ing_002",
+    "title": "Despliegues a producción",
+    "content": "Los despliegues a producción se hacen únicamente los martes y miércoles entre 9:00 a. m. y 3:00 p. m. Está prohibido desplegar los viernes y en vísperas de festivos. Antes de desplegar, el cambio debe estar al menos 24 horas en el ambiente de staging sin errores. Si un despliegue genera errores en producción, el responsable debe hacer rollback de inmediato y avisar en el canal #incidentes de Slack. Los despliegues los aprueba el líder técnico del proyecto.",
+    "metadata": {"department": "ingenieria", "type": "policy"}
+  },
+  {
+    "id": "ing_003",
+    "title": "Stack tecnológico estándar",
+    "content": "Para proyectos nuevos, CodeAndes usa Python con FastAPI en el backend, React con TypeScript en el frontend y PostgreSQL como base de datos principal. Para caché se usa Redis. Todos los servicios se empaquetan en contenedores Docker y se despliegan en AWS. Usar una tecnología fuera de este stack requiere la aprobación del comité de arquitectura, que se reúne el primer lunes de cada mes.",
+    "metadata": {"department": "ingenieria", "type": "standard"}
+  },
+  {
+    "id": "fin_001",
+    "title": "Auxilio de educación",
+    "content": "CodeAndes cubre hasta el 50 % del valor de cursos, certificaciones o posgrados relacionados con el cargo del empleado, con un tope de 3.000.000 de pesos al año. Para acceder al auxilio, el empleado debe llevar al menos un año en la empresa y presentar la solicitud al área de Finanzas antes de inscribirse. El reembolso se hace contra la factura y el certificado de aprobación del curso. Si el empleado renuncia en los 6 meses siguientes al reembolso, debe devolver el dinero.",
+    "metadata": {"department": "finanzas", "type": "benefit"}
+  },
+  {
+    "id": "fin_002",
+    "title": "Reembolso de gastos de viaje",
+    "content": "Los gastos de viaje por trabajo (transporte, hospedaje y alimentación) se reembolsan si fueron aprobados antes del viaje por el líder de equipo. La alimentación tiene un tope de 120.000 pesos por día. Las facturas se suben a la plataforma ExpenseFlow en los 5 días hábiles siguientes al regreso del viaje. Finanzas paga los reembolsos en la quincena siguiente a la aprobación. No se reembolsan bebidas alcohólicas ni multas de tránsito.",
+    "metadata": {"department": "finanzas", "type": "policy"}
+  },
+  {
+    "id": "sop_001",
+    "title": "Soporte a clientes y tiempos de respuesta",
+    "content": "El equipo de soporte atiende a los clientes por correo y por el portal de tickets, de lunes a viernes de 7:00 a. m. a 7:00 p. m. Los tickets se clasifican en tres niveles: crítico (el sistema del cliente está caído), alto (una función importante no sirve) y normal (dudas o mejoras). Los tickets críticos se deben responder en máximo 1 hora, los altos en 4 horas y los normales en 2 días hábiles. Los tickets críticos también se atienden fines de semana con un ingeniero de turno.",
+    "metadata": {"department": "soporte", "type": "procedure"}
+  },
+  {
+    "id": "sop_002",
+    "title": "Planes y precios de CodeAndes Cloud",
+    "content": "CodeAndes Cloud, la plataforma de gestión de inventarios de la empresa, tiene tres planes. El plan Básico cuesta 90.000 pesos al mes e incluye hasta 3 usuarios. El plan Pyme cuesta 250.000 pesos al mes e incluye hasta 15 usuarios y reportes avanzados. El plan Empresarial tiene precio a la medida, usuarios ilimitados y soporte prioritario. Todos los planes tienen 14 días de prueba gratis y se pueden cancelar en cualquier momento sin penalidad.",
+    "metadata": {"department": "ventas", "type": "pricing"}
+  }
+]
