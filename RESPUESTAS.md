@@ -220,13 +220,47 @@ lugar de lineal.
 | ¿En cuánto tiempo se debe responder un ticket crítico? | Máximo 1 hora. | Soporte a clientes y tiempos de respuesta |
 | ¿Cuánto es el salario de un desarrollador junior? / ¿La empresa tiene parqueadero para empleados? *(Pregunta fuera de contexto)* | No tengo esa información en el contexto proporcionado. Los documentos disponibles cubren onboarding, vacaciones, horario laboral y trabajo híbrido, pero no mencionan salarios ni disponibilidad de parqueadero. | N/A (Sin fuente) |
 
-
 ## A3 · Ingeniería del prompt (antes y después)
 
-_Evidencia:_ …
+**Evidencia:**
 
-_Mi respuesta / análisis:_
+**Diff del system prompt** (en `build_pipeline`):
 
+```diff
+  (
+      "system",
+-     "Eres un asistente empresarial. Responde únicamente con información "
+-     "del contexto proporcionado. Si el contexto no contiene la respuesta, "
+-     "indica que no tienes esa información. Responde en español y de forma concisa.",
++     "Eres un asistente empresarial. Responde únicamente con información "
++     "del contexto proporcionado. Cita siempre el título del documento entre "
++     "corchetes, por ejemplo [Política de vacaciones]. Si el contexto no alcanza, "
++     "responde exactamente: «No encuentro esa información en los documentos.» "
++     "Responde en español, en máximo 3 oraciones.",
+  ),
+```
+
+**Tabla comparativa:**
+
+| Pregunta | Tipo | Antes | Después |
+|----------|------|-------|---------|
+| ¿Cuántos revisores necesita un pull request? | Fácil | "Se requiere la aprobación de al menos 2 revisores." Sin citar fuente. | "Un pull request requiere la aprobación de al menos 2 revisores [Flujo de trabajo con Git]." |
+| ¿Cuántos días tengo libres? | Ambigua | 15 días hábiles de vacaciones al año (tras 6 meses de antigüedad) más 1 día libre por cumpleaños. Sin citar fuente. | 15 días hábiles de vacaciones más un día por cumpleaños, "sumando 16 días libres" [Vacaciones y días libres]. |
+| ¿La empresa tiene parqueadero para empleados? | Fuera de contexto | "El contexto no menciona información sobre parqueadero para empleados." | "No encuentro esa información en los documentos." (frase fija exacta) |
+
+**Mi respuesta / análisis:**
+
+**Cómo hice la prueba**
+Hice las 3 preguntas juntas en un mismo mensaje, antes y después del cambio. Por eso el modelo respondió las tres en una sola respuesta, pero igual se nota bien la diferencia entre los dos prompts.
+
+**Qué cambió**
+Antes, el modelo respondía en formato de lista con negritas, empezaba con "Según el contexto proporcionado" y no decía de qué documento sacaba cada cosa. Después, la respuesta quedó en texto corrido, cada dato tiene su fuente entre corchetes y la respuesta completa quedó en exactamente 3 oraciones.
+
+**¿Qué instrucción tuvo más efecto?**
+La de citar el título entre corchetes. Antes no había ninguna referencia a los documentos y después las dos preguntas con respuesta quedaron citadas con el título exacto. La frase fija también funcionó: para el parqueadero usó literalmente "No encuentro esa información en los documentos.", mientras que antes lo decía con sus propias palabras.
+
+**¿Qué ignoró el modelo?**
+Ninguna instrucción la ignoró del todo, pero sí hay detalles. En la pregunta ambigua, en vez de aclarar que podía referirse a varias cosas, asumió que eran vacaciones y además hizo una suma que no está en el documento ("16 días libres"). Esa cifra la sacó él, no el texto. Y al limitarlo a 3 oraciones perdió información que antes sí daba, como que las vacaciones solo aplican después de 6 meses en la empresa. O sea, el límite de oraciones hace la respuesta más corta, pero puede dejar por fuera condiciones importantes.
 
 ## A4 · Muestra el score de similitud en las fuentes
 
