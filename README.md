@@ -4,7 +4,7 @@
 
 - **Nombre:** Yan Frank Ríos López
 - **Código estudiantil:** 1000388339
-- **Usuario de GitHub:** [Lppz16](https://github.com/Lppz06)
+- **Usuario de GitHub:** [Lppz16](https://github.com/lppz16)
 - **Fecha:** 21 de octubre de 2026
 - **Entrega a:** [jipadillab@eafit.edu.co](mailto:jipadillab@eafit.edu.co)
 - **Curso:** Inteligencia Artificial — Universidad EAFIT
