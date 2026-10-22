@@ -55,7 +55,9 @@ La parte práctica integra **Python, Google Colab, LangChain, NVIDIA NIM, Qdrant
 | C5 | MMR frente a similitud pura (reto) | 8 | ◐ | [RESPUESTAS.md](RESPUESTAS.md), interpretación; falta comparación observada de las consultas |
 | C6 | Persistencia del índice en disco (reto) | 8 | ◐ | [RESPUESTAS.md](RESPUESTAS.md); faltan los tiempos medidos de indexación y reapertura |
 
-**Autoevaluación:** pendiente de completar y contrastar con la rúbrica del profesor. Las actividades T1–T5, A1–A4, B1–B5 y R1 suman **70 puntos posibles**; los retos C1–C6 suman **70 puntos adicionales**. La lista completa contiene **140 puntos nominales**, por lo que no es correcto asumir una calificación de 140/100 ni asignarse 100/100 sin conocer cómo se ponderan los retos.
+**Autoevaluación:** Las actividades T1–T5, A1–A4, B1–B5 y R1 suman **70 puntos posibles**; los retos C1–C6 suman **70 puntos adicionales**
+
+Pero en mi opinión, tuve un buen esfuerzo.
 
 ---
 
@@ -117,6 +119,6 @@ El Workshop RAG me permitió conectar conceptos teóricos de HNSW, búsqueda apr
 
 ## Autor
 
-**Isabella Cadavid Posada**  
+**Wendy Vanessa Atehortua Chaverra**  
 Ingeniería de Sistemas — Universidad EAFIT  
 2026
