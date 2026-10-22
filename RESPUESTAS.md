@@ -467,42 +467,49 @@ Para llevar el prototipo a producción, comenzaría por reemplazar la configurac
 
 ## C1 · HNSW contra fuerza bruta con FAISS
 
-_Evidencia:_ …
+El índice `IndexFlatL2` realiza búsqueda exacta y sirve como referencia para calcular `recall@10`. `IndexHNSWFlat` construye un grafo para explorar una parte de los vectores, por lo que intercambia exactitud por velocidad. Al aumentar `efSearch`, normalmente se exploran más candidatos: sube el recall y también suele aumentar la latencia. Un `M` mayor agrega más conexiones al grafo, lo que puede mejorar la navegación a costa de más memoria y tiempo de construcción.
 
-_Mi respuesta / análisis:_
+- **¿Qué `efSearch` logra recall ≥ 0,95 con M=16?** Ejecuta C1 y copia el primer valor que imprime la celda “Resumen reproducible de C1”. La respuesta depende de los datos y de la configuración ejecutada; no debe suponerse antes de medir.
+- **¿Con qué n HNSW empieza a ser más rápido que el exacto?** Usa la tabla “Punto de equilibrio observado” generada por C1. Marca el menor `n` donde `hnsw_mas_rapido` sea `True`, indicando también el `efSearch` usado. El resultado depende del hardware, del número de consultas y del parámetro `efSearch`.
 
+Los vectores aleatorios uniformes son un caso difícil porque no representan la estructura semántica ni los agrupamientos que suelen aparecer en embeddings reales; además, su distribución geométrica puede hacer que las distancias sean poco discriminantes. Con embeddings de texto esperaría grupos y vecindarios asociados a temas o significados, pero no necesariamente mejor recall automáticamente: el resultado dependerá del modelo, corpus, dimensión y distribución de consultas. Por eso conviene repetir la prueba con embeddings reales y consultas representativas de la aplicación.
 
-## C2 · Un tercer paper: el RAG que explica HNSW
+## C2 · El paper de HNSW
 
-_Evidencia:_ …
+| Pregunta | Ground truth | Fuente esperada |
+|---|---|---|
+| How is the maximum layer of an element selected in HNSW? | Se selecciona aleatoriamente con una distribución de probabilidad que decae exponencialmente, controlada por el parámetro `mL`. | `hnsw_paper.pdf` |
+| What is the role of parameter M in HNSW? | `M` controla la cantidad máxima de conexiones por elemento y afecta la navegabilidad, el recall y el consumo de memoria. | `hnsw_paper.pdf` |
+| How does the HNSW search algorithm move through the hierarchy? | La búsqueda comienza en la capa superior y desciende por las capas; el elemento más cercano encontrado se usa como punto de entrada para la capa inferior. | `hnsw_paper.pdf` |
+| How are FAISS and HNSW related to the RAG system described in the RAG paper? | FAISS proporciona búsqueda eficiente sobre vectores; HNSW es una estrategia de índice aproximado que puede apoyar la recuperación. No son el modelo generativo. | `rag_paper.pdf` |
 
-_Mi respuesta / análisis:_
+La tabla de resultados del notebook muestra las fuentes realmente recuperadas para cada pregunta. Contrasta esos fragmentos con el PDF: que la fuente aparezca en el top-k no garantiza que el fragmento contenga evidencia suficiente. En la notación del paper, `M` describe conexiones del grafo, mientras que `ef` controla el tamaño de la lista dinámica de candidatos durante la búsqueda; no son parámetros intercambiables.
 
+## C3 · App Gradio con filtro por paper
 
-## C3 · App Gradio para los papers con filtro por paper
+La aplicación permite elegir «Todos», «Attention Is All You Need» o «Retrieval-Augmented Generation». El filtro se aplica en Qdrant sobre `metadata.source`, de modo que la recuperación ocurre únicamente entre fragmentos del paper seleccionado. Para comparar, formula exactamente la misma pregunta primero con «Todos» y luego con cada paper: el contexto y las fuentes recuperadas pueden cambiar, y una respuesta puede quedar incompleta si el documento filtrado no contiene la evidencia necesaria.
 
-_Evidencia:_ …
-
-_Mi respuesta / análisis:_
-
+La captura `evidencias/C3_gradio.png` debe tomarse después de ejecutar la celda de Gradio en Colab y abrir el enlace generado; no se incluye una captura ficticia porque la aplicación requiere ejecutarse con las credenciales del entorno.
 
 ## C4 · Evaluación automática de la recuperación
 
-_Evidencia:_ …
+La función `hit_at_k` cuenta una pregunta como acierto si entre los primeros `k` fragmentos aparece uno que contiene la palabra clave y cuya fuente coincide con `fuente_esperada`. La tabla de resultados se imprime al ejecutar el notebook y se guarda en `C4_resultados.csv`; copia esos valores a la entrega después de ejecutar la indexación para `chunk_size` 400, 900 y 1500.
 
-_Mi respuesta / análisis:_
+Dos limitaciones de `hit@k` son:
 
+1. **Depende de palabras clave exactas.** Un fragmento puede responder correctamente con sinónimos o una formulación distinta y aun así fallar la métrica.
+2. **No evalúa la calidad de la respuesta final.** Un acierto solo indica que apareció un fragmento con la palabra y fuente esperadas; no comprueba si el modelo lo interpretó correctamente ni si la respuesta fue completa.
 
 ## C5 · MMR frente a similitud pura
 
-_Evidencia:_ …
+La similitud pura ordena fragmentos por cercanía semántica a la consulta y puede devolver varios pasajes casi duplicados. MMR selecciona fragmentos que balancean relevancia y diversidad, con `k=5`, `fetch_k=20` y `lambda_mult=0.5`. En las tres preguntas del notebook, compara los textos y sus metadatos: la cobertura mejora si MMR incluye evidencia complementaria o de distintas partes relevantes del paper, mientras que la similitud pura puede concentrarse en una sola idea.
 
-_Mi respuesta / análisis:_
-
+MMR suele ayudar más en preguntas amplias o que requieren varias facetas de un tema. Puede empeorar en preguntas muy específicas, donde varios fragmentos similares son precisamente la evidencia más pertinente, porque la diversidad puede desplazar un fragmento altamente relevante por otro menos útil.
 
 ## C6 · Persistencia del índice en disco
 
-_Evidencia:_ …
+La colección persistente se guarda en `./qdrant_data`. La primera ejecución mide la indexación y escritura; en una ejecución posterior, la celda detecta la colección y mide la reapertura sin volver a generar embeddings. La tabla de tiempos debe completarse con las cifras impresas por el notebook, porque dependen del entorno y de si la colección ya existe.
 
-_Mi respuesta / análisis:_
+La persistencia local evita reconstruir el índice tras cada reinicio, pero no basta para producción. Harían falta una estrategia de concurrencia y despliegue apropiada, autenticación y autorización, respaldos y recuperación, control de versiones del corpus, monitoreo, manejo de errores y pruebas de consistencia del índice.
+
 
