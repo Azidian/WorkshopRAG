@@ -12,11 +12,11 @@ Reemplaza esta tabla con la que genera el botón «Copiar mi progreso en Markdow
 
 | ID | Tarea | Puntos | Hecha | Evidencia |
 |---|---|---:|:---:|---|
-| T1 | Cuántos nodos viven en cada capa | 2 | ⬜ | |
-| T2 | ef, k y el tamaño de la cola | 2 | ⬜ | |
-| T3 | Inserción frente a búsqueda | 2 | ⬜ | |
-| T4 | El invariante de FAISSVectorStore | 2 | ⬜ | |
-| T5 | El costo de la fuerza bruta | 2 | ⬜ | |
+| T1 | Cuántos nodos viven en cada capa | 2 | X | |
+| T2 | ef, k y el tamaño de la cola | 2 | X | |
+| T3 | Inserción frente a búsqueda | 2 | X | |
+| T4 | El invariante de FAISSVectorStore | 2 | X | |
+| T5 | El costo de la fuerza bruta | 2 | X | |
 | A1 | Ejecuta la app RAG de punta a punta | 4 | ⬜ | |
 | A2 | Tu propio corpus de documentos | 6 | ⬜ | |
 | A3 | Ingeniería del prompt (antes y después) | 5 | ⬜ | |
