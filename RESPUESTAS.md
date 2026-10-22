@@ -206,6 +206,9 @@ lugar de lineal.
 ## A2 · Tu propio corpus de documentos
 
 **Evidencia:**
+![A2_Corpus](evidencias/A2_corpus.png)
+![A2_Corpus](evidencias/A2_corpus2.png)
+![A2_Corpus](evidencias/A2_corpus3.png)
 
 **Mi respuesta / análisis:**
 | Pregunta | Respuesta | Fuente recuperada |
