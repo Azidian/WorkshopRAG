@@ -223,6 +223,8 @@ lugar de lineal.
 ## A3 · Ingeniería del prompt (antes y después)
 
 **Evidencia:**
+![A3](evidencias/A3.png)
+![A3](evidencias/A3.1.png)
 
 **Diff del system prompt** (en `build_pipeline`):
 
