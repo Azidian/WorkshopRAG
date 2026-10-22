@@ -281,7 +281,15 @@ _Mi respuesta / análisis:_
 [RESPUESTAS.md](evidencias/RESPUESTAS.md)
 
 **Mi respuesta / análisis:**
-[RESPUESTAS.md](evidencias/RESPUESTAS.md)
+
+| Pregunta | Respuesta del RAG (resumen fiel) | ¿Correcta? | ¿Contexto del paper correcto? | Comparación con el ground truth |
+|---|---|---|---|---|
+| **Q1 — BLEU score** | Transformer big obtuvo **28.4 BLEU** en WMT 2014 inglés-alemán. | **Sí** | **Sí:** *Attention Is All You Need* (`attention_paper.pdf`; chunks 28, 1, 26, 40 y 31). | Coincide con el valor de referencia; la respuesta no destacó la mejora de más de dos puntos frente a resultados anteriores. |
+| **Q2 — Memoria RAG** | Combina **BART** como memoria paramétrica con un índice denso de Wikipedia como memoria no paramétrica; **DPR** recupera los documentos, usados para generar la respuesta. | **Sí** | **Sí:** *Retrieval-Augmented Generation* (`rag_paper.pdf`; chunks 1, 8, 32, 7 y 50). | Coincide con la explicación del ground truth e incorpora detalles adicionales del modelo probabilístico. |
+| **Q3 — Scaling factor** | El factor **1/√dₖ** evita productos punto demasiado grandes, que saturarían softmax y producirían gradientes pequeños. | **Sí** | **Sí:** *Attention Is All You Need* (`attention_paper.pdf`; chunks 11, 12, 13, 16 y 20). | Coincide con la explicación esperada del escalamiento y su efecto en el entrenamiento. |
+| **Q4 — Variantes RAG** | **RAG-Sequence** condiciona la secuencia completa con un documento; **RAG-Token** permite diferentes documentos por token. | **Sí** | **Sí:** *Retrieval-Augmented Generation* (`rag_paper.pdf`; chunks 10, 11, 1, 50 y 7). | Explica correctamente la diferencia; omite el costo computacional adicional de RAG-Token, que no era el foco de la pregunta. |
+| **Q5 — Atención multi-cabeza** | Transformer base usa **8 cabezas**, con **dₖ = dᵥ = 64** por cabeza. | **Sí** | **Sí:** *Attention Is All You Need* (`attention_paper.pdf`; chunks 14, 15, 9, 0 y 40). | Coincide con los valores del ground truth e incluye la relación 512/8 = 64. |
+| **Bonus — Relación RAG y Transformer** | Identificó **BART** como generador seq2seq, pero indicó que los extractos no confirmaban si BART se basa en Transformer. | **Parcial** | **Fuente citada en la respuesta:** *Retrieval-Augmented Generation* (`rag_paper.pdf`). **Lista de fragmentos recuperados aún no compartida**; no se confirma la aparición de ambos papers. | El *ground truth* exige **BART-large** y confirmar que es un modelo basado en Transformer. La respuesta identifica la familia BART, pero deja sin resolver la segunda parte. |
 
 
 ## B2 · Experimentos con chunk_size, k y score_threshold
