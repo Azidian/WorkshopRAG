@@ -343,29 +343,29 @@ _Evidencia:_ …
 _Mi respuesta / análisis:_
 
 
-
 # Bloque R · Reflexión
 
-## R1 · Reflexión final con tus datos
+# Reflexión
 
-### 1. ¿Qué ocurrió cuando el contexto no contenía información suficiente? ¿El modelo reconoció la limitación o inventó?
-Durante las pruebas de resistencia con preguntas trampa o fuera de contexto, el modelo mostró inicialmente una tendencia a alucinar o a extrapolar información general cuando las directrices del sistema eran flexibles. Tras refinar y endurecer el *system prompt* con instrucciones explícitas de honestidad, el sistema logró identificar de manera efectiva que los fragmentos recuperados no contenían la respuesta solicitada. Esto evidencia que la confiabilidad de un RAG no recae únicamente en la precisión del motor de búsqueda vectorial, sino también en las restricciones estrictas impuestas en la capa generativa para evitar respuestas inventadas.
+### 1. ¿Qué ocurrió cuando el contexto no contenía información suficiente? ¿El modelo reconoció la limitación o inventó una respuesta?
+
+En la pregunta bonus, el modelo respondió que RAG utiliza BART como componente generativo, pero aclaró que los fragmentos recuperados no explicaban explícitamente si BART estaba basado en la arquitectura Transformer. En lugar de afirmar algo sin evidencia, reconoció esa limitación y diferenció la información encontrada en el paper de RAG de la información del paper *Attention Is All You Need*. Esto demuestra que las instrucciones del prompt pueden ayudar a reducir las respuestas inventadas, aunque sería necesario probar el sistema con más preguntas sin respuesta para comprobar si mantiene ese comportamiento.
 
 ### 2. ¿Qué fragmentos se recuperaron para la pregunta bonus? ¿Aparecieron ambos papers?
-En la consulta *bonus* orientada a sintetizar información cruzada, la búsqueda vectorial logró recuperar fragmentos relevantes de ambos documentos académicos gracias a que el espacio latente del modelo de *embeddings* agrupa conceptos semánticamente afines. No obstante, se comprobó que la aparición equilibrada de ambas fuentes dependía críticamente del valor del parámetro $k$ y de los umbrales de similitud; cuando $k$ era insuficiente, los fragmentos clave del segundo paper quedaban desplazados fuera de la ventana de contexto. Esto demuestra que las consultas multi-documento exigen un ajuste fino del número de vecinos recuperados para evitar sesgos hacia una sola fuente.
+
+Para la pregunta bonus, Qdrant recuperó cinco fragmentos: cuatro del artículo *Retrieval-Augmented Generation* y uno de *Attention Is All You Need*. Los fragmentos correspondían a los índices 7, 11, 10 y 12 del primer artículo, y al índice 0 del segundo. Por lo tanto, sí aparecieron ambos papers, pero el contexto recuperado no fue suficiente para establecer explícitamente toda la relación entre BART y Transformer, por lo que el modelo respondió parcialmente la pregunta.
 
 ### 3. ¿Qué efecto tuvo modificar `chunk_size`, `chunk_overlap`, `k` o `score_threshold`?
-La experimentación sistemática demostró que cada hiperparámetro afecta de forma directa el balance entre precisión y cobertura del sistema. Un `chunk_size` muy reducido fragmentaba definiciones técnicas complejas rompiendo el hilo argumental, mientras que uno excesivamente grande diluía la densidad semántica y arrastraba ruido innecesario al contexto. Por otro lado, calibrar adecuadamente el `score_threshold` permitió filtrar fragmentos irrelevantes con alta precisión, evitando alimentar al modelo con baja calidad semántica a cambio de requerir un monitoreo cuidadoso para no descartar información válida.
+
+En el notebook se utilizaron `chunk_size=900`, `chunk_overlap=120`, `k=5` y `score_threshold=0.25`. Estos parámetros determinan cómo se divide la información y qué fragmentos se recuperan para construir las respuestas. Si aumentamos `chunk_size`, podemos conservar más contexto, pero también incluir información innecesaria; si aumentamos `chunk_overlap`, podemos mantener la continuidad entre fragmentos, aunque se genera más redundancia. Por otra parte, aumentar `k` permite recuperar más fragmentos, mientras que aumentar `score_threshold` hace más estricta la selección por similitud. Estos cambios podrían mejorar o empeorar las respuestas según la pregunta, por lo que sería necesario comparar los resultados de diferentes configuraciones para determinar cuál funciona mejor.
 
 ### 4. ¿Por qué conviene separar el modelo de embeddings del modelo generativo?
-Desacoplar el modelo de *embeddings* (responsable de la vectorización y el cálculo de cercanía semántica) del modelo generativo (LLM) optimiza de manera radical la eficiencia arquitectónica y los costos computacionales. Esta separación permite indexar, persistir y buscar eficientemente en bases vectoriales especializadas a alta velocidad sin necesidad de invocar costosas inferencias de lenguaje natural en cada fase de recuperación. Asimismo, otorga flexibilidad modular para actualizar o reemplazar de forma independiente el motor de recuperación o el modelo de lenguaje según las necesidades del negocio.
 
-### 5. ¿Qué cambiarías para llevar este prototipo a producción? Considera persistencia, control de acceso, evaluación, observabilidad y costos.
-Llevar este prototipo a un entorno productivo empresarial exige una reingeniería hacia una arquitectura robusta y escalable en múltiples dimensiones:
-- **Persistencia y Arquitectura:** Migrar de un almacenamiento volátil o local a un clúster distribuido de Qdrant con replicación y respaldos automáticos, implementando un pipeline de ingestión incremental en lugar de reconstrucciones totales del índice.
-- **Seguridad y Gobierno:** Integrar control de acceso basado en roles (RBAC) y filtrado dinámico por metadatos en la capa de consulta para garantizar que los usuarios únicamente accedan a documentos autorizados.
-- **Observabilidad y Evaluación:** Incorporar plataformas de monitoreo de telemetría para rastrear la latencia por consulta, el consumo de tokens y los costos asociados, además de pipelines automatizados de evaluación continua (como Ragas) para medir la calidad de las respuestas y la tasa de alucinaciones en tiempo real.
+Conviene separar ambos modelos porque cumplen funciones diferentes dentro del sistema RAG. El modelo de embeddings utilizado en el notebook, `nvidia/nemotron-3-embed-1b`, convierte los documentos y las consultas en vectores que permiten encontrar información semánticamente relacionada; el modelo generativo, `nvidia/nemotron-3-super-120b-a12b`, utiliza los fragmentos recuperados para elaborar una respuesta en lenguaje natural. Esta separación permite seleccionar y optimizar cada modelo de acuerdo con su función, controlar sus costos y actualizar el componente generativo sin reconstruir necesariamente el índice vectorial. Sin embargo, si se cambia el modelo de embeddings, normalmente es necesario volver a generar los vectores para mantener la compatibilidad del índice.
 
+### 5. ¿Qué cambiarías para llevar este prototipo a producción?
+
+Para llevar el prototipo a producción, comenzaría por reemplazar la configuración de Qdrant en memoria por una base vectorial persistente, de manera que los documentos indexados no se pierdan al reiniciar la aplicación. También implementaría autenticación, permisos de acceso y almacenamiento seguro de las claves de API para proteger tanto los documentos como los servicios utilizados. En cuanto a la evaluación, crearía un conjunto de preguntas con respuestas esperadas, incluyendo preguntas sin respuesta en los documentos, y mediría la relevancia de los fragmentos recuperados y la precisión de las respuestas. Además, incorporaría registros y métricas para monitorear errores, tiempos de respuesta, calidad de recuperación y consumo de tokens. Finalmente, optimizaría parámetros como `k`, aplicaría caché cuando fuera conveniente y establecería límites de uso para controlar los costos. Estos cambios permitirían contar con un sistema más seguro, estable, medible y eficiente que el prototipo desarrollado en el notebook.
 ---
 
 # Retos
